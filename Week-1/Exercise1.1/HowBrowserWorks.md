@@ -1,4 +1,4 @@
-
+<HTML>
 # 1. What is the main functionality of the browser? #
 The main function of a browser is to present the web resource you choose, by requesting it from the server and displaying it in the browser window. The resource is usually an HTML document, but may also be a PDF, image, or some other type of content. The location of the resource is specified by the user using a URI (Uniform Resource Identifier).
 
@@ -15,7 +15,9 @@ The rendering engine: responsible for displaying requested content. For example 
 - JavaScript interpreter. Used to parse and execute JavaScript code.
 - Data storage. This is a persistence layer. The browser may need to save all sorts of data locally, such as cookies. Browsers also support storage mechanisms such as localStorage, IndexedDB, WebSQL and FileSystem.
 
-![alt text](assets/browser-components.png)
+<p align="center">
+<img src="assets/browser-components.png"/>
+</p>
 
 It is important to note that browsers such as Chrome run multiple instances of the rendering engine: one for each tab. Each tab runs in a separate process.
 
@@ -147,3 +149,4 @@ background image
 border
 children
 outline
+</HTML>
