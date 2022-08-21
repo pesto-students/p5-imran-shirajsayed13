@@ -15,7 +15,7 @@ The rendering engine: responsible for displaying requested content. For example 
 - JavaScript interpreter. Used to parse and execute JavaScript code.
 - Data storage. This is a persistence layer. The browser may need to save all sorts of data locally, such as cookies. Browsers also support storage mechanisms such as localStorage, IndexedDB, WebSQL and FileSystem.
 
-<img src="/assets/browser-components.png"/>
+![alt text](assets/browser-components.png)
 
 It is important to note that browsers such as Chrome run multiple instances of the rendering engine: one for each tab. Each tab runs in a separate process.
 
