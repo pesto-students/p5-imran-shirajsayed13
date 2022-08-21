@@ -14,21 +14,17 @@ The rendering engine: responsible for displaying requested content. For example 
 - JavaScript interpreter. Used to parse and execute JavaScript code.
 - Data storage. This is a persistence layer. The browser may need to save all sorts of data locally, such as cookies. Browsers also support storage mechanisms such as localStorage, IndexedDB, WebSQL and FileSystem.
 
-<p align="center">
-<img src="assets/browser-components.png"/>
-</p>
-
 It is important to note that browsers such as Chrome run multiple instances of the rendering engine: one for each tab. Each tab runs in a separate process.
 
 # 3. Rendering engine and its use. #
-The responsibility of the rendering engine is well… Rendering, that is display of the requested contents on the browser screen.
+The responsibility of the rendering engine is well Rendering, that is display of the requested contents on the browser screen.
 
-Rendering engines #
+Rendering engines 
 Different browsers use different rendering engines: Internet Explorer uses Trident, Firefox uses Gecko, Safari uses WebKit. Chrome and Opera (from version 15) use Blink, a fork of WebKit.
 
 WebKit is an open source rendering engine which started as an engine for the Linux platform and was modified by Apple to support Mac and Windows. See webkit.org for more details.
 
-The main flow #
+The main flow 
 The rendering engine will start getting the contents of the requested document from the networking layer. This will usually be done in 8kB chunks.
 
 After that, this is the basic flow of the rendering engine:
@@ -42,7 +38,7 @@ After the construction of the render tree it goes through a "layout" process. Th
 
 It's important to understand that this is a gradual process. For better user experience, the rendering engine will try to display contents on the screen as soon as possible. It will not wait until all HTML is parsed before starting to build and layout the render tree. Parts of the content will be parsed and displayed, while the process continues with the rest of the contents that keeps coming from the network.
 
-# 4. Parsing - general #
+# 4. Parsing #
 Since parsing is a very significant process within the rendering engine, we will go into it a little more deeply. Let's begin with a little introduction about parsing.
 
 Parsing a document means translating it to a structure the code can use. The result of parsing is usually a tree of nodes that represent the structure of the document. This is called a parse tree or a syntax tree.
@@ -95,13 +91,13 @@ All renderers have a "layout" or "reflow" method, each renderer invokes the layo
 
 The layout usually has the following pattern:
 
-Parent renderer determines its own width.
-Parent goes over children and:
-Place the child renderer (sets its x and y).
-Calls child layout if needed - they are dirty or we are in a global layout, or for some other reason - which calculates the child's height.
-Parent uses children's accumulative heights and the heights of margins and padding to set its own height - this will be used by the parent renderer's parent.
-Sets its dirty bit to false.
-Firefox uses a "state" object(nsHTMLReflowState) as a parameter to layout (termed "reflow"). Among others the state includes the parents width.
+- Parent renderer determines its own width.
+- Parent goes over children and:
+- Place the child renderer (sets its x and y).
+- Calls child layout if needed - they are dirty or we are in a global layout, or for some other reason - which calculates the child's height.
+- Parent uses children's accumulative heights and the heights of margins and padding to set its own height - this will be used by the parent renderer's parent.
+- Sets its dirty bit to false.
+-Firefox uses a "state" object(nsHTMLReflowState) as a parameter to layout (termed "reflow"). Among others the state includes the parents width.
 
 The output of the Firefox layout is a "metrics" object(nsHTMLReflowMetrics). It will contain the renderer computed height.
 
