@@ -1,4 +1,3 @@
-<HTML>
 # 1. What is the main functionality of the browser? #
 The main function of a browser is to present the web resource you choose, by requesting it from the server and displaying it in the browser window. The resource is usually an HTML document, but may also be a PDF, image, or some other type of content. The location of the resource is specified by the user using a URI (Uniform Resource Identifier).
 
@@ -24,8 +23,6 @@ It is important to note that browsers such as Chrome run multiple instances of t
 # 3. Rendering engine and its use. #
 The responsibility of the rendering engine is well… Rendering, that is display of the requested contents on the browser screen.
 
-By default the rendering engine can display HTML and XML documents and images. It can display other types of data via plug-ins or extension; for example, displaying PDF documents using a PDF viewer plug-in. However, in this chapter we will focus on the main use case: displaying HTML and images that are formatted using CSS.
-
 Rendering engines #
 Different browsers use different rendering engines: Internet Explorer uses Trident, Firefox uses Gecko, Safari uses WebKit. Chrome and Opera (from version 15) use Blink, a fork of WebKit.
 
@@ -37,7 +34,6 @@ The rendering engine will start getting the contents of the requested document f
 After that, this is the basic flow of the rendering engine:
 
 Rendering engine basic flow
-Figure : Rendering engine basic flow
 The rendering engine will start parsing the HTML document and convert elements to DOM nodes in a tree called the "content tree". The engine will parse the style data, both in external CSS files and in style elements. Styling information together with visual instructions in the HTML will be used to create another tree: the render tree.
 
 The render tree contains rectangles with visual attributes like color and dimensions. The rectangles are in the right order to be displayed on the screen.
@@ -51,11 +47,6 @@ Since parsing is a very significant process within the rendering engine, we will
 
 Parsing a document means translating it to a structure the code can use. The result of parsing is usually a tree of nodes that represent the structure of the document. This is called a parse tree or a syntax tree.
 
-For example, parsing the expression 2 + 3 - 1 could return this tree:
-
-Mathematical expression tree node.
-Figure : mathematical expression tree node
-Grammars #
 Parsing is based on the syntax rules the document obeys: the language or format it was written in. Every format you can parse must have deterministic grammar consisting of vocabulary and syntax rules. It is called a context free grammar. Human languages are not such languages and therefore cannot be parsed with conventional parsing techniques.
 
 Parser - Lexer combination #
@@ -69,33 +60,12 @@ Parsers usually divide the work between two components: the lexer (sometimes cal
 
 The lexer knows how to strip irrelevant characters like white spaces and line breaks.
 
-From source document to parse trees
-Figure : from source document to parse trees
 The parsing process is iterative. The parser will usually ask the lexer for a new token and try to match the token with one of the syntax rules. If a rule is matched, a node corresponding to the token will be added to the parse tree and the parser will ask for another token.
 
 If no rule matches, the parser will store the token internally, and keep asking for tokens until a rule matching all the internally stored tokens is found. If no rule is found then the parser will raise an exception. This means the document was not valid and contained syntax errors.
 
 Translation #
 In many cases the parse tree is not the final product. Parsing is often used in translation: transforming the input document to another format. An example is compilation. The compiler that compiles source code into machine code first parses it into a parse tree and then translates the tree into a machine code document.
-
-Compilation flow
-Figure : compilation flow
-Parsing example #
-In figure 5 we built a parse tree from a mathematical expression. Let's try to define a simple mathematical language and see the parse process.
-
-Key Term
-
-Our language can include integers, plus signs and minus signs.
-Syntax:
-
-The language syntax building blocks are expressions, terms and operations.
-Our language can include any number of expressions.
-An expression is defined as a "term" followed by an "operation" followed by another term
-An operation is a plus token or a minus token
-A term is an integer token or an expression
-Let's analyze the input 2 + 3 - 1.
-
-The first substring that matches a rule is 2: according to rule #5 it is a term. The second match is 2 + 3: this matches the third rule: a term followed by an operation followed by another term. The next match will only be hit at the end of the input. 2 + 3 - 1 is an expression because we already know that 2 + 3is a term, so we have a term followed by an operation followed by another term. 2 + + will not match any rule and therefore is an invalid input.
 
 # WebKit CSS parser #
 WebKit uses Flex and Bison parser generators to create parsers automatically from the CSS grammar files. As you recall from the parser introduction, Bison creates a bottom up shift-reduce parser. Firefox uses a top down parser written manually. In both cases each CSS file is parsed into a StyleSheet object. Each object contains CSS rules. The CSS rule objects contain selector and declaration objects and other objects corresponding to CSS grammar.
@@ -137,16 +107,3 @@ The output of the Firefox layout is a "metrics" object(nsHTMLReflowMetrics). It 
 
 # Painting #
 In the painting stage, the render tree is traversed and the renderer's "paint()" method is called to display content on the screen. Painting uses the UI infrastructure component.
-
-# Global and Incremental #
-Like layout, painting can also be global - the entire tree is painted - or incremental. In incremental painting, some of the renderers change in a way that does not affect the entire tree. The changed renderer invalidates its rectangle on the screen. This causes the OS to see it as a "dirty region" and generate a "paint" event. The OS does it cleverly and coalesces several regions into one. In Chrome it is more complicated because the renderer is in a different process then the main process. Chrome simulates the OS behavior to some extent. The presentation listens to these events and delegates the message to the render root. The tree is traversed until the relevant renderer is reached. It will repaint itself (and usually its children).
-
-# The painting order #
-CSS2 defines the order of the painting process. This is actually the order in which the elements are stacked in the stacking contexts. This order affects painting since the stacks are painted from back to front. The stacking order of a block renderer is:
-
-background color
-background image
-border
-children
-outline
-</HTML>
