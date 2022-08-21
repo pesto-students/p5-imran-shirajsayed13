@@ -1,10 +1,12 @@
 
 https://web.dev/howbrowserswork/
+
+# 1. What is the main functionality of the browser? #
 The main function of a browser is to present the web resource you choose, by requesting it from the server and displaying it in the browser window. The resource is usually an HTML document, but may also be a PDF, image, or some other type of content. The location of the resource is specified by the user using a URI (Uniform Resource Identifier).
 
 The way the browser interprets and displays HTML files is specified in the HTML and CSS specifications. These specifications are maintained by the W3C (World Wide Web Consortium) organization, which is the standards organization for the web. For years browsers conformed to only a part of the specifications and developed their own extensions. That caused serious compatibility issues for web authors. Today most of the browsers more or less conform to the specifications.
 
-The browser's high level structure #
+# 2. High Level Components of a browser. #
 The browser's main components are:
 
 The user interface: this includes the address bar, back/forward button, bookmarking menu, etc. Every part of the browser display except the window where you see the requested page.
@@ -17,7 +19,7 @@ Data storage. This is a persistence layer. The browser may need to save all sort
 
 It is important to note that browsers such as Chrome run multiple instances of the rendering engine: one for each tab. Each tab runs in a separate process.
 
-The rendering engine #
+# 3. Rendering engine and its use. #
 The responsibility of the rendering engine is well… Rendering, that is display of the requested contents on the browser screen.
 
 By default the rendering engine can display HTML and XML documents and images. It can display other types of data via plug-ins or extension; for example, displaying PDF documents using a PDF viewer plug-in. However, in this chapter we will focus on the main use case: displaying HTML and images that are formatted using CSS.
@@ -42,7 +44,7 @@ After the construction of the render tree it goes through a "layout" process. Th
 
 It's important to understand that this is a gradual process. For better user experience, the rendering engine will try to display contents on the screen as soon as possible. It will not wait until all HTML is parsed before starting to build and layout the render tree. Parts of the content will be parsed and displayed, while the process continues with the rest of the contents that keeps coming from the network.
 
-Parsing - general #
+# 4. Parsing - general #
 Since parsing is a very significant process within the rendering engine, we will go into it a little more deeply. Let's begin with a little introduction about parsing.
 
 Parsing a document means translating it to a structure the code can use. The result of parsing is usually a tree of nodes that represent the structure of the document. This is called a parse tree or a syntax tree.
@@ -93,3 +95,55 @@ Let's analyze the input 2 + 3 - 1.
 
 The first substring that matches a rule is 2: according to rule #5 it is a term. The second match is 2 + 3: this matches the third rule: a term followed by an operation followed by another term. The next match will only be hit at the end of the input. 2 + 3 - 1 is an expression because we already know that 2 + 3is a term, so we have a term followed by an operation followed by another term. 2 + + will not match any rule and therefore is an invalid input.
 
+# WebKit CSS parser #
+WebKit uses Flex and Bison parser generators to create parsers automatically from the CSS grammar files. As you recall from the parser introduction, Bison creates a bottom up shift-reduce parser. Firefox uses a top down parser written manually. In both cases each CSS file is parsed into a StyleSheet object. Each object contains CSS rules. The CSS rule objects contain selector and declaration objects and other objects corresponding to CSS grammar.
+
+# Scripts #
+The model of the web is synchronous. Authors expect scripts to be parsed and executed immediately when the parser reaches a <script> tag. The parsing of the document halts until the script has been executed. If the script is external then the resource must first be fetched from the network - this is also done synchronously, and parsing halts until the resource is fetched. This was the model for many years and is also specified in HTML4 and 5 specifications. Authors can add the "defer" attribute to a script, in which case it will not halt document parsing and will execute after the document is parsed. HTML5 adds an option to mark the script as asynchronous so it will be parsed and executed by a different thread.
+
+# Render tree construction #
+While the DOM tree is being constructed, the browser constructs another tree, the render tree. This tree is of visual elements in the order in which they will be displayed. It is the visual representation of the document. The purpose of this tree is to enable painting the contents in their correct order.
+
+Firefox calls the elements in the render tree "frames". WebKit uses the term renderer or render object.
+
+A renderer knows how to lay out and paint itself and its children.
+
+# Layout #
+When the renderer is created and added to the tree, it does not have a position and size. Calculating these values is called layout or reflow.
+
+HTML uses a flow based layout model, meaning that most of the time it is possible to compute the geometry in a single pass. Elements later "in the flow" typically do not affect the geometry of elements that are earlier "in the flow", so layout can proceed left-to-right, top-to-bottom through the document. There are exceptions: for example, HTML tables may require more than one pass.
+
+The coordinate system is relative to the root frame. Top and left coordinates are used.
+
+Layout is a recursive process. It begins at the root renderer, which corresponds to the <html> element of the HTML document. Layout continues recursively through some or all of the frame hierarchy, computing geometric information for each renderer that requires it.
+
+The position of the root renderer is 0,0 and its dimensions are the viewport - the visible part of the browser window.
+
+All renderers have a "layout" or "reflow" method, each renderer invokes the layout method of its children that need layout.
+
+The layout usually has the following pattern:
+
+Parent renderer determines its own width.
+Parent goes over children and:
+Place the child renderer (sets its x and y).
+Calls child layout if needed - they are dirty or we are in a global layout, or for some other reason - which calculates the child's height.
+Parent uses children's accumulative heights and the heights of margins and padding to set its own height - this will be used by the parent renderer's parent.
+Sets its dirty bit to false.
+Firefox uses a "state" object(nsHTMLReflowState) as a parameter to layout (termed "reflow"). Among others the state includes the parents width.
+
+The output of the Firefox layout is a "metrics" object(nsHTMLReflowMetrics). It will contain the renderer computed height.
+
+# Painting #
+In the painting stage, the render tree is traversed and the renderer's "paint()" method is called to display content on the screen. Painting uses the UI infrastructure component.
+
+# Global and Incremental #
+Like layout, painting can also be global - the entire tree is painted - or incremental. In incremental painting, some of the renderers change in a way that does not affect the entire tree. The changed renderer invalidates its rectangle on the screen. This causes the OS to see it as a "dirty region" and generate a "paint" event. The OS does it cleverly and coalesces several regions into one. In Chrome it is more complicated because the renderer is in a different process then the main process. Chrome simulates the OS behavior to some extent. The presentation listens to these events and delegates the message to the render root. The tree is traversed until the relevant renderer is reached. It will repaint itself (and usually its children).
+
+# The painting order #
+CSS2 defines the order of the painting process. This is actually the order in which the elements are stacked in the stacking contexts. This order affects painting since the stacks are painted from back to front. The stacking order of a block renderer is:
+
+background color
+background image
+border
+children
+outline
