@@ -1,0 +1,57 @@
+body {
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+}
+
+main {
+    margin-top: 50px;
+}
+
+main h2 {
+    position: absolute;
+    z-index: -1;
+    top: 120px;
+    left: 49.5%;
+}
+
+.center-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.square {
+    width: 100px;
+    height: 100px;
+    transition: transform 1s linear;
+}
+
+.red {
+    background-color: red;
+    transform-origin: top left;
+}
+
+.yellow {
+    background-color: yellow;
+    transform-origin: top right;
+}
+
+.green {
+    background-color: green;
+    transform-origin: bottom right;
+
+}
+
+.blue {
+    background-color: blue;
+    transform-origin: bottom left;
+}
+
+main:hover .red, main:hover .green {
+    transform: rotate(90deg);
+}
+
+main:hover .yellow, main:hover .blue {
+    transform: rotate(-90deg);
+}
