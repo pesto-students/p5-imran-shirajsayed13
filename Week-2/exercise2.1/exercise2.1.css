@@ -1,0 +1,67 @@
+body {
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+}
+
+main {
+    margin: 10px;
+}
+
+article p {
+    text-align: center;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 10px;
+}
+
+.form {
+    width: 30%;
+    margin: auto;
+}
+
+input[type=submit] {
+    background: #94cbf8;
+    color: #fff;
+    border: 1px solid #eee;
+    height: 35px;
+    width: 100px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover, input[type=submit]:focus {
+    background: #016ABC;
+    color: #fff;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px #eee;
+    text-shadow: none;
+}
+
+input, select {
+    padding:3px;
+    border-radius:3px;
+    border: 1px solid #979797;
+}
+
+@media screen and (max-width: 992px) {
+    .grid{
+        grid-template-columns: 1fr;
+    }
+    .form {
+        width: 95%;
+        margin: 10px;
+    }
+    h1 {
+        font-size: 1.5em;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    article img {
+        width: 50;
+    }
+}

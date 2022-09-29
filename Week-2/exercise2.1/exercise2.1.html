@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width", initial-scale="1.0">
+        <meta name="description" content="Week 2 - Exercise2.1">
+        <meta name="author" content="Shiraj Sayed">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+        <link rel="stylesheet" rel="preload" href="/Week-2/exercise2.1/exercise2.1.css">
+        <title>Form</title>
+    </head>
+    <body>
+        <main>
+            <h1 style="text-align: center;">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
+            <section class="grid">
+                <article>
+                    <img src="https://i1.wp.com/www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg?ssl=1" alt="Sample" width="100%">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent pharetra dui vitae vulputate ullamcorper. Etiam purus tortor, venenatis imperdiet odio ut, scelerisque imperdiet est. Etiam vitae dignissim metus. Nulla fringilla nunc vel nisl accumsan dapibus. Maecenas eget tincidunt lacus. Aenean commodo velit lorem, a ultricies dui congue quis. Nulla porta augue augue, vel consectetur orci vestibulum in. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum pharetra diam ac ante cursus porta. Pellentesque vitae commodo nisl, sit amet commodo nunc. Vivamus et congue turpis, id iaculis justo. Praesent imperdiet in mi eget convallis. Nulla sit amet commodo elit. Quisque lectus sem, mollis eu rutrum porta, ultrices et neque.</p>
+                </article>
+                <article>
+                    <h3>Vivamus non ultricies tortor</h3>
+                    <p>Vivamus non ultricies tortor, ut sagittis ante. Vivamus pellentesque nibh sagittis urna aliquet, vel varius lorem elementum. Morbi porttitor maximus nibh id mollis. Phasellus tristique arcu eget nisl iaculis interdum. Donec ac feugiat lectus. Fusce consectetur quis dui vitae vehicula. Vestibulum enim libero, imperdiet ac est id, vehicula porta dolor. Duis ut arcu nec elit dapibus tincidunt non ut ante. Ut facilisis nulla in mollis porttitor. Praesent tempus dui a felis ullamcorper, sed facilisis turpis rhoncus. Nunc tempus nisl ex. Aliquam suscipit finibus libero, et placerat mi maximus quis. Suspendisse dictum aliquet mi lobortis malesuada. Nullam convallis metus at risus lacinia, quis semper mauris ultricies.</p>
+                </article>
+                <article>
+                    <h3>Donec posuere magna tortor</h3>
+                    <p>Donec posuere magna tortor, sit amet lobortis nibh blandit vel. Phasellus sit amet porta nisl. Cras placerat malesuada tempor. Aliquam erat volutpat. Suspendisse gravida justo fringilla dolor accumsan elementum. Suspendisse porta venenatis turpis, ut commodo dolor pharetra at. Nulla facilisi. Pellentesque sed ligula sed arcu feugiat maximus a non diam. Fusce scelerisque neque ipsum, sed placerat diam laoreet vel. Etiam tincidunt nisi augue, id congue nunc euismod id. Vestibulum eu sem ac purus dignissim pellentesque. Donec finibus, ligula a aliquam sodales, metus nisl faucibus nibh, vel dictum dui diam efficitur erat.</p>
+                </article>
+            </section>
+        </main>
+        <section class="form">
+            <form class="grid">
+                <label>Title:</label>
+                <div>
+                    <input type="radio" id="mr" name="title" value="Mr" required>
+                    <label for="mr">Mr</label>
+                    <input type="radio" id="mrs" name="title" value="Mrs" required>
+                    <label for="mrs">Mrs</label>
+                    <input type="radio" id="miss" name="title" value="Miss" required>
+                    <label for="miss">Miss</label>
+                </div>
+                <label for="first_name">First name:</label>
+                <input type="text" id="first_name" name="first_name" value="" required>
+                <label for="last_name">Last name:</label>
+                <input type="text" id="last_name" name="last_name" value="" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="" required>
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" name="phone" value="" maxlength="10" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" value="" minlength="8" required>
+                <label for="confirm_password">Confirm password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" value="" minlength="8" required>
+                <label for="country">Country:</label>
+                <select name="country" id="country">
+                    <option value="India">India</option> 
+                    <option value="Canada">Canada</option>
+                    <option value="America">America</option>
+                    <option value="England">England</option>
+                </select>
+                <input type="checkbox" id="terms" name="terms" value="terms">
+                <label for="terms">I agree to the <a href="https://www.google.com" target="_blank">terms and conditions</a></label>
+                <input type="submit" value="Sign Up" style="grid-column-end: span 2; margin: auto;">
+            </form>
+        </section>
+        <footer>
+            <p>Pellentesque id erat vulputate neque euismod molestie vitae ut ipsum. Proin non faucibus ex. Phasellus condimentum pulvinar dapibus. Sed at velit nec nulla sodales pulvinar ut et ante. Praesent sodales varius mauris id pulvinar. Nunc ut blandit nisi, id tempor lectus. In fringilla sapien nunc, vitae luctus odio tempus id. Donec semper quam nulla, vel ultrices lacus sodales eget.</p>
+        </footer>
+    </body>
+</html>
