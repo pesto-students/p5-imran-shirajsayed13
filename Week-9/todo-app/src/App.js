@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+
+import AddTaskForm from './components/AddTaskForm.jsx'
+import UpdateTaskForm from './components/UpdateTaskForm.jsx'
+import ToDo from './components/ToDo.jsx'
+
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleCheck, faPen, faTrashCan } from '@fortawesome/free-solid-svg-icons';
-
-
 import './App.css';
 
 function App() {
-  const [todo, setTodo] = useState([
-    { "id": 1, "title": "Task 1", "status": true },
-    { "id": 1, "title": "Task 1", "status": false },
-  ]);
+  const [todo, setTodo] = useState([]);
 
   // Temp State
   const [newTask, setNewTask] = useState('');
@@ -45,15 +43,24 @@ function App() {
 
   // Cancel update
   const cancelUpdate = () => {
-
+    setUpdateTask('');
   }
 
-  const changeTask = () => {
-
+  const changeTask = (e) => {
+    let newEntry = {
+      id: updateTask.id,
+      title: e.target.value,
+      status: updateTask.status ? true : false
+    }
+    setUpdateTask(newEntry);
   }
 
   // Update Task
   const updateTaskData = () => {
+    let filterRecords = [...todo].filter(task => task.id !== updateTask.id);
+    let updatedObject = [...filterRecords, updateTask];
+    setTodo(updatedObject);
+    setUpdateTask('');
 
   }
 
@@ -63,72 +70,31 @@ function App() {
       <h1>ToDo List ReactJS App</h1>
       <br />
 
-      {/* Update Task */}
-      <div className='row'>
-        <div className='col'>
-          <input className="form-control form-control-lg" />
-        </div>
-        <div className='col-auto'>
-          <button className='btn btn-lg btn-success mr-20'>Update</button>
-          <button className='btn btn-lg btn-warning'>Cancel</button>
-        </div>
-      </div>
-      <br />
+      {updateTask && updateTask ? (
+        <UpdateTaskForm
+          updateTask={updateTask}
+          changeTask={changeTask}
+          updateTaskData={updateTaskData}
+          cancelUpdate={cancelUpdate}
+        />
 
-      {/* Add Task */}
-      <div className='row'>
-        <div className='col'>
-          <input
-            value={newTask}
-            onChange={(e) => setNewTask(e.target.value)}
-            className="form-control form-control-lg" />
-        </div>
-        <div className='col-auto'>
-          <button
-            onClick={addTask}
-            className='btn btn-lg btn-success'>Add Task</button>
-        </div>
-      </div>
-      <br />
+      ) : (
+        
+        <AddTaskForm
+          newTask={newTask}
+          setNewTask={setNewTask}
+          addTask={addTask}
+        />
+      )}
 
       {todo && todo.length ? '' : 'No Tasks...'}
 
-      {
-        todo && todo
-          .sort((a, b) => a.id > b.id ? 1 : -1)
-          .map((task, index) => {
-            return (
-              <React.Fragment key={task.id}>
-                <div className='col taskBg'>
-                  <div className={task.status ? 'done' : ''}>
-                    <span className='taskNumber'>{index + 1}</span>
-                    <span className='taskText'>{task.title}</span>
-                  </div>
-                  <div className='iconsWrap'>
-                    <span title='Completed / Not Completed'
-                      onClick={(e) => markDone(task.id)}
-                    >
-                      <FontAwesomeIcon icon={faCircleCheck} />
-                    </span>
-
-                    {task.status ? null : (
-                      <span title='Edit'>
-                        <FontAwesomeIcon icon={faPen} />
-                      </span>
-                    )}
-
-                    <span title='Delete'
-                      onClick={() => deleteTask(task.id)}
-                    >
-                      <FontAwesomeIcon icon={faTrashCan} />
-                    </span>
-
-                  </div>
-                </div>
-              </React.Fragment>
-            )
-          })
-      }
+      <ToDo
+        todo={todo}
+        markDone={markDone}
+        setUpdateTask={setUpdateTask}
+        deleteTask={deleteTask}
+      />
     </div>
   );
 }
